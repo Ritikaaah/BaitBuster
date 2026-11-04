@@ -221,5 +221,6 @@ __marimo__/
 
 *.pyc
 ml/artifacts/*.joblib
-*.csv
 .DS_Store
+.env.*
+!.env.example
