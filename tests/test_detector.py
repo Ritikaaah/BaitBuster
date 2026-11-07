@@ -81,3 +81,48 @@ def test_punycode_detection():
         finding["rule"] == "Punycode"
         for finding in findings
     )
+
+def test_two_subdomain_labels_not_flagged():
+
+    result = analyze_url(
+        "https://paypal.com.verify-account.xyz/login"
+    )
+
+    findings = detect_suspicious_features(result)
+
+    assert not any(
+        finding["rule"] == "Excessive Subdomains"
+        for finding in findings
+    )
+
+def test_three_subdomain_labels_flagged():
+
+    result = analyze_url(
+        "https://one.two.three.example.com"
+    )
+
+    findings = detect_suspicious_features(result)
+
+    assert any(
+        finding["rule"] == "Excessive Subdomains"
+        for finding in findings
+    )
+
+def test_paypal_lookalike_url_analysis():
+
+    url = "https://paypal.com.verify-account.xyz/login"
+
+    analysis = analyze_url(url)
+
+    findings = detect_suspicious_features(analysis)
+
+    assert analysis["registered_domain"] == "verify-account.xyz"
+
+    detected_rules = [
+        finding["rule"]
+        for finding in findings
+    ]
+
+    assert "Suspicious Keywords" in detected_rules
+
+    assert "Excessive Subdomains" not in detected_rules
