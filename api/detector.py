@@ -19,6 +19,20 @@ SUSPICIOUS_KEYWORDS = [
     "refund",
 ]
 
+COMMON_DOMAIN_EXTENSIONS = {
+    "com",
+    "net",
+    "org",
+    "edu",
+    "gov",
+    "mil",
+    "io",
+    "in",
+    "co",
+    "app",
+    "dev"
+}
+
 def detect_suspicious_features(analysis):
     """
     Examine extracted URL information and identify
@@ -66,6 +80,27 @@ def detect_suspicious_features(analysis):
             "message": (
                 "The URL contains potentially suspicious words: "
                 + ", ".join(detected_keywords)
+            )
+        })
+
+    # Check for domain-like patterns inside subdomains.
+    subdomain_labels = subdomain.lower().split(".")
+
+    domain_like_found = any(
+        len(label) >= 2 and extension in COMMON_DOMAIN_EXTENSIONS
+        for label, extension in zip(
+            subdomain_labels,
+            subdomain_labels[1:]
+        )
+    )
+
+    if domain_like_found:
+        findings.append({
+            "rule": "Domain-like Subdomain",
+            "severity": "medium",
+            "message": (
+                "The subdomain contains a domain-like pattern. "
+                "This may be an attempt to impersonate another website."
             )
         })
 

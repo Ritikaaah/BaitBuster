@@ -126,3 +126,34 @@ def test_paypal_lookalike_url_analysis():
     assert "Suspicious Keywords" in detected_rules
 
     assert "Excessive Subdomains" not in detected_rules
+
+def test_domain_like_subdomain_detection():
+
+    analysis = {
+        "original_url": "https://paypal.com.verify-account.xyz/login",
+        "hostname": "paypal.com.verify-account.xyz",
+        "subdomain": "paypal.com"
+    }
+
+    findings = detect_suspicious_features(analysis)
+
+    assert any(
+        finding["rule"] == "Domain-like Subdomain"
+        for finding in findings
+    )
+
+
+def test_normal_subdomain_not_flagged():
+
+    analysis = {
+        "original_url": "https://mail.google.com",
+        "hostname": "mail.google.com",
+        "subdomain": "mail"
+    }
+
+    findings = detect_suspicious_features(analysis)
+
+    assert not any(
+        finding["rule"] == "Domain-like Subdomain"
+        for finding in findings
+    )

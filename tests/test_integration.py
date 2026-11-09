@@ -43,7 +43,7 @@ def test_paypal_lookalike_pipeline():
         for finding in findings
     )
 
-    assert result["score"] == 10
+    assert result["score"] == 25
     assert result["category"] == "Low"
 
 
