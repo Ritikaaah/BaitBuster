@@ -1,5 +1,6 @@
 from api.analyzer import analyze_url
 from api.detector import detect_suspicious_features
+from api.scorer import calculate_risk_score
 
 def main():
 
@@ -34,6 +35,22 @@ def main():
         else:
             print("\nNo suspicious characteristics detected.")
 
+        #Calculate the overall risk score
+        risk_result = calculate_risk_score(findings)
+
+        print("\n======= RISK ASSESSMENT =======")
+
+        print(f"Risk Score: {risk_result['score']}/100")
+        print(f"Risk Category: {risk_result['category']}")
+
+        print(f"\nBaseline Score: {risk_result['baseline']}")
+        print(f"Additional Risk Points: {risk_result['points_added']}")
+
+        print("\nSeverity Breakdown:")
+
+        for severity, count in risk_result['breakdown'].items():
+            print(f"{severity.title()}: {count}")
+
         print("\n=================================")
         print("Analysis completed.")
         print("=================================")
@@ -41,6 +58,11 @@ def main():
         print(
             "\nNote: These findings are indicators, "
             "not proof that a website is malicious."
+        )
+
+        print(
+            "A low risk score does not guarantee "
+            "that a website is safe."
         )
 
     except ValueError as error:
