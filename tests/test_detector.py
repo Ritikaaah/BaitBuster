@@ -157,3 +157,51 @@ def test_normal_subdomain_not_flagged():
         finding["rule"] == "Domain-like Subdomain"
         for finding in findings
     )
+
+
+def test_encoded_at_symbol_detection():
+
+    analysis = {
+        "original_url": "https://paypal.com%40evil.com/login",
+        "hostname": "paypal.com%40evil.com",
+        "subdomain": "",
+    }
+
+    findings = detect_suspicious_features(analysis)
+
+    assert any(
+        finding["rule"] == "Encoded At Symbol"
+        for finding in findings
+    )
+
+
+def test_encoded_at_symbol_in_path_not_flagged():
+
+    analysis = {
+        "original_url": "https://example.com/path%40name",
+        "hostname": "example.com",
+        "subdomain": "",
+    }
+
+    findings = detect_suspicious_features(analysis)
+
+    assert not any(
+        finding["rule"] == "Encoded At Symbol"
+        for finding in findings
+    )
+
+
+def test_encoded_at_symbol_in_username_not_flagged():
+
+    analysis = {
+        "original_url": "https://user%40company.com@example.com/login",
+        "hostname": "example.com",
+        "subdomain": ""
+    }
+
+    findings = detect_suspicious_features(analysis)
+
+    assert not any(
+        finding["rule"] == "Encoded At Symbol"
+        for finding in findings
+    )

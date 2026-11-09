@@ -149,4 +149,15 @@ def detect_suspicious_features(analysis):
             )
         })
 
+    # Check for encoded @ symbol in the hostname.
+    if "%40" in hostname.lower():
+        findings.append({
+            "rule": "Encoded At Symbol",
+            "severity": "medium",
+            "message": (
+                "The hostname contains an encoded @ symbol (%40). "
+                "This may be an attempt to disguise the actual destination."
+            )
+        })
+        
     return findings
