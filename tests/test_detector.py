@@ -205,3 +205,51 @@ def test_encoded_at_symbol_in_username_not_flagged():
         finding["rule"] == "Encoded At Symbol"
         for finding in findings
     )
+
+
+def test_bitly_url_shortener_detection():
+    analysis = {
+        "original_url": "https://bit.ly/abc123",
+        "hostname": "bit.ly",
+        "subdomain": "",
+        "registered_domain": "bit.ly",
+    }
+
+    findings = detect_suspicious_features(analysis)
+
+    assert any(
+        finding["rule"] == "URL Shortener"
+        for finding in findings
+    )
+
+
+def test_tinyurl_shortener_detection():
+    analysis = {
+        "original_url": "https://tinyurl.com/xyz123",
+        "hostname": "tinyurl.com",
+        "subdomain": "",
+        "registered_domain": "tinyurl.com",
+    }
+
+    findings = detect_suspicious_features(analysis)
+
+    assert any(
+        finding["rule"] == "URL Shortener"
+        for finding in findings
+    )
+
+
+def test_normal_domain_not_detected_as_shortener():
+    analysis = {
+        "original_url": "https://google.com",
+        "hostname": "google.com",
+        "subdomain": "",
+        "registered_domain": "google.com",
+    }
+
+    findings = detect_suspicious_features(analysis)
+
+    assert not any(
+        finding["rule"] == "URL Shortener"
+        for finding in findings
+    )

@@ -33,6 +33,16 @@ COMMON_DOMAIN_EXTENSIONS = {
     "dev"
 }
 
+URL_SHORTENERS = {
+    "bit.ly",
+    "tinyurl.com",
+    "t.co",
+    "is.gd",
+    "ow.ly",
+    "buff.ly",
+    "rebrand.ly",
+}
+
 def detect_suspicious_features(analysis):
     """
     Examine extracted URL information and identify
@@ -146,6 +156,19 @@ def detect_suspicious_features(analysis):
             "message": (
                 "The hostname contains punycode encoding. "
                 "Check for possible lookalike characters."
+            )
+        })
+
+    # Check for known URL shorteners.
+    registered_domain = analysis.get("registered_domain", "").lower()
+
+    if registered_domain in URL_SHORTENERS:
+        findings.append({
+            "rule": "URL Shortener",
+            "severity": "low",
+            "message": (
+                "The URL uses a known URL-shortening service. "
+                "The original destination is hidden."
             )
         })
 
