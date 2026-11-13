@@ -1,2 +1,5 @@
 tldextract
 pytest
+fastapi
+uvicorn
+httpx

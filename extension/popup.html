@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaitBuster</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="brand">
+                <span class="brand-mark">b.</span>
+                <span class="brand-name">baitbuster</span>
+            </div>
+
+            <span class="version">WEB PROTECTION / 01</span>
+        </header>
+
+
+        <!-- Introduction -->
+        <section class="intro">
+            <p class="eyebrow">A MOMENT BEFORE YOU CLICK</p>
+
+            <h1>
+                Browse with<br>
+                <span>better instincts.</span>
+            </h1>
+
+            <p class="intro-text">
+                A second opinion on the links you visit.
+                Simple, thoughtful, and always on your side.
+            </p>
+        </section>
+
+
+        <!-- Current website -->
+        <section class="website-section">
+
+            <div class="section-heading">
+                <span>CURRENT WEBSITE</span>
+                <span class="live-indicator">
+                    <span class="live-dot"></span>
+                    ACTIVE TAB
+                </span>
+            </div>
+
+            <div class="website-card">
+                <div class="website-icon">↗</div>
+
+                <div class="website-details">
+                    <p id="website-name">Waiting for website</p>
+                    <span id="website-url">Open a website to begin</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Scan button -->
+        <button id="scan-button" class="scan-button">
+            <span>Analyse this website</span>
+            <span class="button-arrow">↗</span>
+        </button>
+
+
+        <!-- Result section -->
+        <section id="result-section" class="result-section hidden">
+
+            <div class="result-heading">
+                <span class="eyebrow">BAITBUSTER ASSESSMENT</span>
+                <span id="risk-badge" class="risk-badge">LOW</span>
+            </div>
+
+            <div class="score-container">
+                <div>
+                    <span id="risk-score" class="risk-score">05</span>
+                    <span class="score-total">/ 100</span>
+                </div>
+
+                <p id="risk-description">Risk indicators detected</p>
+            </div>
+
+            <div class="score-track">
+                <div id="score-fill" class="score-fill"></div>
+            </div>
+
+            <div class="findings-container">
+                <p class="findings-title">WHAT WE NOTICED</p>
+                <div id="findings-list"></div>
+            </div>
+
+        </section>
+
+
+        <!-- Error message -->
+        <p id="error-message" class="error-message hidden"></p>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <span>BAITBUSTER © 2026</span>
+            <span>THINK BEFORE YOU CLICK.</span>
+        </footer>
+
+    </main>
+
+    <script src="popup.js"></script>
+
+</body>
+</html>
