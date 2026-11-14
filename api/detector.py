@@ -62,6 +62,17 @@ def detect_suspicious_features(analysis):
     subdomain = analysis["subdomain"]
     parsed_url = urlsplit(url)
 
+    #Check whether the URL uses insecure HTTP.
+    if parsed_url.scheme.lower() == "http":
+        findings.append({
+            "rule": "Insecure HTTP",
+            "severity": "low",
+            "message": (
+                "The URL uses HTTP instead of HTTPS. "
+                "The connection does not provide HTTPS encryption."
+            )
+        })
+
     #Check whether the hostname is an IP address.
     try:
         ipaddress.ip_address(hostname)
@@ -159,7 +170,18 @@ def detect_suspicious_features(analysis):
             )
         })
 
-    # Check for known URL shorteners.
+    #Check for multiple hyphens in the hostname.
+    if hostname.count("-") >= 3:
+        findings.append({
+            "rule": "Multiple Hyphens",
+            "severity": "low",
+            "message": (
+                "The hostname contains three or more hyphens. "
+                "This unusual pattern may deserve closer inspection."
+            )
+        })    
+
+    #Check for known URL shorteners.
     registered_domain = analysis.get("registered_domain", "").lower()
 
     if registered_domain in URL_SHORTENERS:

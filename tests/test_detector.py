@@ -253,3 +253,37 @@ def test_normal_domain_not_detected_as_shortener():
         finding["rule"] == "URL Shortener"
         for finding in findings
     )
+
+def test_http_url_detection():
+
+    result = analyze_url("http://example.com/login")
+    findings = detect_suspicious_features(result)
+
+    assert any(
+        finding["rule"] == "Insecure HTTP"
+        for finding in findings
+    )
+
+def test_multiple_hyphens_in_hostname_detected():
+
+    result = analyze_url(
+        "https://secure-account-verify-now.example.com"
+    )
+    findings = detect_suspicious_features(result)
+
+    assert any(
+        finding["rule"] == "Multiple Hyphens"
+        for finding in findings
+    )
+
+def test_normal_hyphenated_hostname_not_flagged():
+
+    result = analyze_url(
+        "https://my-company.example.com"
+    )
+    findings = detect_suspicious_features(result)
+
+    assert not any(
+        finding["rule"] == "Multiple Hyphens"
+        for finding in findings
+    )

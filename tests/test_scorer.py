@@ -74,3 +74,31 @@ def test_invalid_finding():
 
     with pytest.raises(ValueError):
         calculate_risk_score(findings)
+
+def test_scoring_breakdown():
+
+    findings = [
+        {"rule": "Rule 1", "severity": "low"},
+        {"rule": "Rule 2", "severity": "low"},
+        {"rule": "Rule 3", "severity": "medium"},
+        {"rule": "Rule 4", "severity": "high"}
+    ]
+
+    result = calculate_risk_score(findings)
+
+    assert result["breakdown"] == {
+        "low": 2,
+        "medium": 1,
+        "high": 1
+    }
+
+def test_points_added():
+
+    findings = [
+        {"rule": "Rule 1", "severity": "low"},
+        {"rule": "Rule 2", "severity": "medium"}
+    ]
+
+    result = calculate_risk_score(findings)
+
+    assert result["points_added"] == 20
